@@ -1,5 +1,14 @@
 # Add files here to ignore them from prettier formatting
+
+# Cross-platform (xplat) tools for Nx workspaces.https://github.com/nstudio/xplat
+**/xplat/*/.xplatframework
+
+# Dist
 /dist
+
+# Coverage
 /coverage
+
+# Nx cache
 /.nx/cache
 /.nx/workspace-data

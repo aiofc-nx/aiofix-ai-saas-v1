@@ -1,0 +1,427 @@
+---
+description: Aiofix-AI-SaaS平台架构设计概述
+globs:
+alwaysApply: true
+---
+# SAAS 平台架构设计概述
+
+## 项目概述
+
+Aiofix-AI-SaaS平台致力于为现代企业提供**AI原生**的SaaS解决方案，帮助传统企业管理系统在AI时代实现**智能化重构**，通过预训练大语言模型等AI技术，彻底改变企业经营管理模式。
+
+声明：本阶段开发聚焦于基础框架的搭建，不涉及AI以及其他ERP内容。
+
+## 技术栈选择
+
+- **后端框架**：Node.js + NestJS + Fastify + Pino
+- **数据层**：MikroORM + PostgreSQL + MongoDB
+- **开发工具**：pnpm + Nx + TypeScript
+- **部署**：Docker + Kubernetes + CI/CD
+
+## 核心架构设计
+
+混合架构模式：Clean Architecture + CQRS + 事件溯源（ES）+ 事件驱动架构（EDA）
+
+### 架构模式组合说明
+
+这个混合架构模式将四种强大的架构模式有机结合：
+
+- **Clean Architecture**: 提供分层架构基础和依赖控制
+- **CQRS**: 在应用层实现命令查询职责分离
+- **Event Sourcing**: 在领域层提供事件存储和重放能力
+- **Event-Driven Architecture**: 在基础设施层实现异步事件处理
+
+### 混合架构模式为 SAAS 平台带来的价值
+
+#### 1. 业务价值
+
+**多租户支持能力**
+
+- **租户隔离**: Clean Architecture 的层次分离天然支持租户级别的数据隔离
+- **个性化配置**: 事件溯源记录每个租户的配置变更历史，支持配置回滚和审计
+- **租户级扩展**: 事件驱动架构支持按租户进行独立的服务扩展
+
+**订阅和计费管理**
+
+- **使用量追踪**: 事件溯源精确记录每个租户的功能使用情况
+- **计费准确性**: CQRS 的读模型可以实时计算使用量和费用
+- **计费审计**: 完整的事件历史支持计费争议的审计和追溯
+
+**合规性和审计**
+
+- **完整审计轨迹**: 事件溯源提供不可篡改的业务操作历史
+- **数据治理**: 清晰的数据流向和事件边界便于数据治理
+- **合规报告**: 基于事件数据自动生成合规报告
+
+#### 2. 技术价值
+
+**高可扩展性**
+
+- **水平扩展**: 事件驱动架构支持服务独立扩展
+- **读写分离**: CQRS 允许读写服务独立扩展
+- **负载均衡**: 查询端可以部署多个实例处理高并发查询
+
+**高性能**
+
+- **查询优化**: CQRS 读模型针对查询场景优化，提升查询性能
+- **缓存友好**: 读模型天然适合缓存，减少数据库压力
+- **异步处理**: 事件驱动架构将耗时操作异步化，提升响应速度
+
+**高可靠性**
+
+- **故障恢复**: 事件溯源支持从任意时间点恢复系统状态
+- **数据一致性**: 事件驱动的最终一致性保证数据完整性
+- **容错能力**: 松耦合的事件架构提高系统容错能力
+
+**高可维护性**
+
+- **代码组织**: Clean Architecture 提供清晰的代码结构和依赖关系
+- **测试友好**: 各层独立，便于单元测试和集成测试
+- **技术演进**: 松耦合设计支持技术栈的渐进式升级
+
+#### 3. 运营价值
+
+**快速迭代**
+
+- **功能解耦**: 事件驱动架构支持功能的独立开发和部署
+- **A/B 测试**: 基于事件的架构便于实现功能开关和 A/B 测试
+- **灰度发布**: 支持按租户或用户群体进行灰度发布
+
+**成本控制**
+
+- **资源优化**: CQRS 允许根据实际使用情况优化资源分配
+- **按需扩展**: 事件驱动架构支持按需扩展，避免资源浪费
+- **运维效率**: 清晰的架构边界降低运维复杂度
+
+**客户体验**
+
+- **实时响应**: 异步事件处理提升用户体验
+- **个性化服务**: 基于事件历史提供个性化功能
+- **服务可用性**: 高可靠性架构保证服务稳定性
+
+### 混合架构模式对复杂业务需求的支撑
+
+**Clean Architecture 的支撑**：
+
+- **领域层**: 清晰定义业务实体和业务规则
+- **应用层**: 通过 CQRS 处理复杂的权限查询和用户管理
+- **基础设施层**: 通过 EDA 处理租户内的事件处理
+- **接口层**: 支持多种用户类型的接口适配
+
+**CQRS 的支撑**：
+
+- **命令端**: 处理用户分配、权限变更等写操作
+- **查询端**: 优化复杂的权限查询和用户关系查询
+- **读模型**: 为不同用户类型提供优化的查询视图
+
+**Event Sourcing 的支撑**：
+
+- **审计能力**: 记录所有用户操作和权限变更
+- **状态重建**: 支持从任意时间点重建用户状态
+- **合规要求**: 满足多租户的合规审计需求
+
+**Event-Driven Architecture 的支撑**：
+
+- **异步处理**: 处理租户内用户分配、权限同步等耗时操作
+- **松耦合**: 支持租户内复杂的用户关系管理
+- **扩展性**: 支持大量用户和租户的并发处理
+- **租户隔离**: 确保事件处理在租户边界内进行
+
+## Clean Architecture 层次结构
+
+### 功能划分依据
+
+**依赖方向原则**
+
+- 内层不依赖外层，外层依赖内层
+- 依赖倒置：高层模块不依赖低层模块，都依赖抽象
+- 接口隔离：每个层次只依赖需要的接口
+
+**职责分离原则**
+
+- 每层只关注自己的核心职责
+- 避免跨层直接调用
+- 通过接口和事件进行层间通信
+
+**业务价值原则**
+
+- 越靠近核心的业务逻辑越稳定
+- 技术实现细节放在外层，便于替换
+- 业务规则集中在领域层，确保一致性
+
+### 领域层 (Domain Layer)
+
+**功能划分依据**:
+
+- **最内层，最稳定**: 包含核心业务逻辑，不依赖任何外部技术
+- **业务规则集中**: 所有业务规则和约束都在此层定义
+- **技术无关**: 不包含任何技术实现细节，如数据库、网络等
+- **事件驱动**: 通过领域事件与外部世界通信
+
+**核心组件**:
+
+- **实体 (Entities)**: 核心业务对象
+- **聚合根 (Aggregate Roots)**: 管理实体生命周期和业务规则
+- **值对象 (Value Objects)**:
+- **领域服务 (Domain Services)**: 跨聚合的业务逻辑
+- **仓储接口 (Repository Interfaces)**: 定义数据访问契约
+- **领域事件 (Domain Events)**: 业务状态变更的事件定义
+
+**目录结构**：
+
+```text
+src/domain/
+├── entities/                      # 实体
+│   └── {entity-name}.entity.ts
+├── value-objects/                 # 值对象
+│   ├── {value-object-name}.vo.ts
+│   └── ids/
+│       └── {id-name}.vo.ts
+├── aggregates/                    # 聚合根
+│   └── {aggregate-name}.aggregate.ts
+├── services/                      # 领域服务
+│   └── {service-name}.service.ts
+├── events/                        # 领域事件
+│   └── {event-name}.event.ts
+├── repositories/                  # 仓储接口
+│   └── {repository-name}.repository.ts
+└── exceptions/                    # 领域异常
+    └── {exception-name}.exception.ts
+```
+
+**设计原则**:
+
+- **技术无关性**: 不依赖任何外部技术框架
+- **业务规则集中**: 所有业务逻辑和约束都在此层
+- **事件驱动**: 通过领域事件与外部世界通信
+- **聚合边界**: 通过聚合根管理实体生命周期
+
+### 应用层 (Application Layer) - CQRS 实现
+
+**功能划分依据**:
+
+- **用例编排**: 协调领域层组件完成具体的业务用例
+- **事务边界**: 定义事务的边界和一致性保证
+- **命令查询分离**: 将修改操作和查询操作完全分离
+- **依赖领域层**: 只依赖领域层接口，不依赖基础设施层
+
+**命令端 (Command Side)**:
+
+- **命令 (Commands)**: 修改系统状态的操作
+- **命令处理器 (Command Handlers)**: 处理命令并产生领域事件
+- **命令验证器 (Command Validators)**: 命令参数验证
+
+**查询端 (Query Side)**:
+
+- **查询 (Queries)**: 只读数据访问操作
+- **查询处理器 (Query Handlers)**: 处理查询请求
+- **读模型 (Read Models)**: 优化的查询数据结构
+
+**应用服务 (Application Services)**: 协调命令和查询执行
+**DTO (Data Transfer Objects)**: 数据传输对象
+
+**目录结构**
+
+```text
+src/application/
+├── common/                        # 公共部分
+│   ├── exceptions/                # 应用层异常定义
+│   │   └── {exception-name}.exception.ts
+│   ├── interfaces/                # 全局通用接口
+│   │   └── {interface-name}.interface.ts
+│   ├── decorators/                # 通用装饰器
+│   │   └── {decorator-name}.decorator.ts
+│   └── middleware/                # 命令/查询总线中间件
+│       └── {middleware-name}.middleware.ts
+├── commands/                      # 命令端
+│   └── {command-name}/
+│       ├── {command-name}.command.ts
+│       ├── {command-name}.handler.ts
+│       ├── {command-name}.result.ts
+│       └── {command-name}.spec.ts
+├── queries/                       # 查询端
+│   └── {query-name}/
+│       ├── {query-name}.query.ts
+│       ├── {query-name}.handler.ts
+│       ├── {query-name}.result.ts
+│       └── {query-name}.spec.ts
+├── ports/                         # 输出端口（接口定义）
+│   ├── commands/                  # 命令侧专用端口
+│   │   └── {repository-name}.interface.ts
+│   ├── queries/                   # 查询侧专用端口
+│   │   └── {read-repository-name}.interface.ts
+│   └── shared/                    # 共享端口
+│       └── {shared-interface-name}.interface.ts
+└── events/                        # 事件处理器
+    ├── projectors/                # 投影器（更新读模型）
+    │   └── {projector-name}.projector.ts
+    ├── subscribers/               # 订阅器（处理副作用）
+    │   └── {subscriber-name}.subscriber.ts
+    ├── sagas/                     # Saga（流程管理器）
+    │   └── {saga-name}.saga.ts
+    └── integration/               # 集成事件发布器
+        └── {publisher-name}.publisher.ts
+```
+
+**设计原则**
+
+- **命令查询分离**: 严格分离写操作和读操作
+- **用例编排**: 协调领域层组件完成业务用例
+- **事务边界**: 在命令处理器中定义事务边界
+- **依赖领域层**: 只依赖领域层接口
+- **事件驱动**: 通过事件处理器处理跨用例逻辑
+
+### 基础设施层 (Infrastructure Layer) - 事件驱动架构实现
+
+**功能划分依据**:
+
+- **技术实现**: 实现领域层和应用层定义的接口
+- **外部集成**: 处理与外部系统的集成，如数据库、消息队列、第三方服务
+- **事件驱动**: 实现事件存储、事件总线等事件驱动架构组件
+- **可替换性**: 技术实现可以独立替换，不影响业务逻辑
+
+**事件存储 (Event Store)**:
+
+- **事件存储实现**: 持久化领域事件
+- **事件序列化器**: 事件对象序列化/反序列化
+- **事件版本控制**: 事件模式演进管理
+
+**事件总线 (Event Bus)**:
+
+- **领域事件发布器**: 发布领域事件
+- **事件订阅器**: 订阅和处理事件
+- **事件路由**: 事件分发和路由
+
+**消息队列处理**: 异步任务处理
+
+- **事件处理器**: 处理异步事件
+- **重试机制**: 失败事件重试
+- **死信队列**: 无法处理的事件处理
+
+**外部服务适配器**: 第三方 API 集成
+**缓存实现**: Redis 等缓存服务
+**仓储实现**: MikroORM 数据访问
+
+**目录结构**
+
+```text
+src/infrastructure/
+├── messaging/                     # 消息总线实现层
+│   ├── message-bus.ts
+│   ├── message-bus.module.ts
+│   └── serializers/              # 事件序列化/反序列化
+│       ├── event-serializer.ts
+│       └── event-deserializer.ts
+├── persistence/                   # 持久化层
+│   ├── event-store/              # 事件存储
+│   │   ├── event-store.service.ts
+│   │   ├── event-serializer.service.ts
+│   │   ├── event-versioning.service.ts
+│   │   └── implementations/
+│   │       └── {event-store-name}.service.ts
+│   ├── projections/              # 投影器实现
+│   │   └── {projection-name}.projection.ts
+│   └── repositories/             # 仓储实现
+│       └── {repository-name}/
+│           ├── {repository-name}.impl.ts
+│           └── {repository-name}-event-store.repository.ts
+├── external-services/             # 外部服务适配器
+│   └── {service-name}/
+│       └── {service-name}.service.ts
+├── cache/                         # 缓存实现
+│   └── {cache-name}.service.ts
+├── database/                      # 数据库
+│   ├── migrations/
+│   ├── seeders/
+│   └── config/
+│       └── {config-name}.config.ts
+├── monitoring/                    # 监控
+│   └── {monitoring-name}.service.ts
+└── di/                           # 依赖注入配置
+    └── container.ts
+```
+
+**设计原则**
+
+- **技术实现**: 实现领域层和应用层定义的接口
+- **外部集成**: 处理与外部系统的集成
+- **事件驱动**: 实现事件存储、事件总线等组件
+- **可替换性**: 技术实现可以独立替换
+
+### 接口层 (Interface Layer)
+
+**功能划分依据**:
+
+- **用户交互**: 处理来自外部用户的请求和交互
+- **协议适配**: 将外部协议转换为内部应用层调用
+- **输入验证**: 对输入数据进行格式和基本验证
+- **响应格式化**: 将内部数据格式化为外部协议格式
+
+**核心组件**:
+
+- **REST API 控制器**: HTTP 接口
+- **GraphQL 解析器**: GraphQL 接口
+- **WebSocket 处理器**: 实时通信
+- **CLI 命令**: 管理工具
+- **消息队列消费者**: 处理来自消息队列的请求
+- **定时任务调度器**: 处理定时触发的任务
+
+**目录结构**
+
+```text
+src/interfaces/
+├── rest/                          # REST API
+│   ├── controllers/
+│   │   └── {controller-name}.controller.ts
+│   ├── middleware/
+│   │   └── {middleware-name}.middleware.ts
+│   ├── guards/
+│   │   └── {guard-name}.guard.ts
+│   └── pipes/
+│       └── {pipe-name}.pipe.ts
+├── graphql/                       # GraphQL
+│   ├── resolvers/
+│   │   └── {resolver-name}.resolver.ts
+│   ├── schemas/
+│   │   └── {schema-name}.schema.ts
+│   └── directives/
+│       └── {directive-name}.directive.ts
+├── websocket/                     # WebSocket
+│   ├── gateways/
+│   │   └── {gateway-name}.gateway.ts
+│   └── handlers/
+│       └── {handler-name}.handler.ts
+├── cli/                          # CLI 命令
+│   └── {command-name}.command.ts
+├── queue-consumers/               # 消息队列消费者
+│   └── {consumer-name}.consumer.ts
+└── schedulers/                    # 定时任务
+    └── {scheduler-name}.scheduler.ts
+```
+
+**设计原则**
+
+- **用户交互**: 处理来自外部用户的请求
+- **协议适配**: 将外部协议转换为内部调用
+- **输入验证**: 对输入数据进行验证
+- **响应格式化**: 将内部数据格式化为外部格式
+
+## 共享组件 (Shared Components)
+
+目录结构:
+
+```text
+src/shared/
+├── constants/                     # 常量
+│   └── {constant-name}.constant.ts
+├── types/                         # 类型定义
+│   └── {type-name}.type.ts
+├── utils/                         # 工具函数
+│   └── {util-name}.util.ts
+├── decorators/                    # 装饰器
+│   └── {decorator-name}.decorator.ts
+├── interceptors/                  # 拦截器
+│   └── {interceptor-name}.interceptor.ts
+└── filters/                       # 异常过滤器
+    └── {filter-name}.filter.ts
+```

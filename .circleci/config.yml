@@ -10,19 +10,19 @@ jobs:
     steps:
       - checkout
 
-      # This enables task distribution via Nx Cloud
-      # Run this command as early as possible, before dependencies are installed
-      # Learn more at https://nx.dev/ci/reference/nx-cloud-cli#npx-nxcloud-startcirun
-      # Uncomment this line to enable task distribution
+      # 这启用了通过 Nx Cloud 的任务分发功能
+      # 在依赖安装之前尽早运行此命令
+      # 了解更多信息：https://nx.dev/ci/reference/nx-cloud-cli#npx-nxcloud-startcirun
+      # 取消注释此行以启用任务分发
       # - run: npx nx start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="build"
 
       - run: yarn install --frozen-lockfile
 
-      # Prepend any command with "nx-cloud record --" to record its logs to Nx Cloud
+      # 在任何命令前添加 "nx-cloud record --" 以将其日志记录到 Nx Cloud
       # - run: yarn nx-cloud record -- echo Hello World
       - run:
           command: yarn nx run-many -t lint test build typecheck
-      # Nx Cloud recommends fixes for failures to help you get CI green faster. Learn more: https://nx.dev/ci/features/self-healing-ci
+      # Nx Cloud 为失败提供修复建议，帮助您更快地让 CI 通过。了解更多：https://nx.dev/ci/features/self-healing-ci
       - run:
           command: yarn nx fix-ci
           when: always
