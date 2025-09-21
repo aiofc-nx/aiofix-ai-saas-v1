@@ -1,6 +1,25 @@
 {
-  "extends": "./tsconfig.base.json",
-  "compileOnSave": false,
-  "files": [],
-  "references": []
+	"extends": "./tsconfig.base.json",
+	"compileOnSave": false,
+	"files": [],
+	"references": [
+		{
+			"path": "./packages/logging"
+		},
+		{
+			"path": "./packages/config"
+		},
+		{
+			"path": "./packages/core"
+		},
+		{
+			"path": "./packages/cache"
+		},
+		{
+			"path": "./packages/messaging"
+		},
+		{
+			"path": "./packages/database"
+		}
+	]
 }
