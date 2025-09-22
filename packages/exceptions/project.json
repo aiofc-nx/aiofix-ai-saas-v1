@@ -1,0 +1,46 @@
+{
+	"name": "exceptions",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "packages/exceptions/src",
+	"projectType": "library",
+	"tags": [],
+	"// targets": "to see all targets run: nx show project exceptions --web",
+	"targets": {
+		"build": {
+			"executor": "@nx/js:tsc",
+			"outputs": [
+				"{options.outputPath}"
+			],
+			"options": {
+				"outputPath": "dist/packages/exceptions",
+				"tsConfig": "packages/exceptions/tsconfig.lib.json",
+				"packageJson": "packages/exceptions/package.json",
+				"main": "packages/exceptions/src/index.ts",
+				"assets": [
+					"packages/exceptions/*.md"
+				]
+			}
+		},
+		"lint": {
+			"executor": "@nx/eslint:lint",
+			"outputs": [
+				"{options.outputFile}"
+			],
+			"options": {
+				"lintFilePatterns": [
+					"packages/exceptions/**/*.ts"
+				]
+			}
+		},
+		"test": {
+			"executor": "@nx/jest:jest",
+			"outputs": [
+				"{workspaceRoot}/coverage/{projectRoot}"
+			],
+			"options": {
+				"jestConfig": "packages/exceptions/jest.config.ts",
+				"passWithNoTests": true
+			}
+		}
+	}
+}
