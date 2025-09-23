@@ -1,6 +1,6 @@
 import { ArgumentsHost, BadRequestException } from '@nestjs/common';
 import { ErrorResponse } from '../vo/error-response.dto';
-import { GeneralBadRequestException } from '../exceptions/general-bad-request.exception';
+import { GeneralBadRequestException } from '../http-exceptions/general-bad-request.exception';
 
 /**
  * 默认响应体格式化器

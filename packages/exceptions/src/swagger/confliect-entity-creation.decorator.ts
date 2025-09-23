@@ -1,6 +1,6 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiConflictResponse, ApiExtraModels, getSchemaPath } from '@nestjs/swagger';
-import { ConflictEntityCreationData } from '../exceptions/vo/conflict-entity-creation.dto.js';
+import { ConflictEntityCreationData } from '../http-exceptions/vo/conflict-entity-creation.dto.js';
 import { ErrorResponse } from '../vo/error-response.dto.js';
 import { errorCodeSwaggerProperty } from './properties/error-code-swagger.property.js';
 

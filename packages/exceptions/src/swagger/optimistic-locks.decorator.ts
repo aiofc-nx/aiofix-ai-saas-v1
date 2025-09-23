@@ -1,7 +1,7 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiConflictResponse, ApiExtraModels, getSchemaPath } from '@nestjs/swagger';
 import { ErrorResponse } from '../vo/error-response.dto.js';
-import { OptimisticLockData } from '../exceptions/vo/optimistic-lock.dto.js';
+import { OptimisticLockData } from '../http-exceptions/vo/optimistic-lock.dto.js';
 
 export const ApiOptimisticLock = () =>
 	applyDecorators(

@@ -12,6 +12,16 @@
 		"types": ["node"]
 	},
 	"include": ["src/**/*.ts"],
-	"references": [],
+	"references": [
+		{
+			"path": "../config/tsconfig.lib.json"
+		},
+		{
+			"path": "../logging/tsconfig.lib.json"
+		},
+		{
+			"path": "../core/tsconfig.lib.json"
+		}
+	],
 	"exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"]
 }

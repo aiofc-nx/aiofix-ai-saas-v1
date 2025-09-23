@@ -15,7 +15,9 @@
 		}
 	},
 	"dependencies": {
-		"tslib": "^2.3.0"
+		"@aiofix/core": "workspace:*",
+		"tslib": "^2.3.0",
+		"uuid": "^13.0.0"
 	},
 	"peerDependencies": {
 		"@nestjs/common": "^10.0.0",

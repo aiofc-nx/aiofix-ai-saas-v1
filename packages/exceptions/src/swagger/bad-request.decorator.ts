@@ -1,6 +1,6 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiExtraModels, ApiBadRequestResponse, getSchemaPath } from '@nestjs/swagger';
-import { BadRequestData } from '../exceptions/vo/bad-request.dto.js';
+import { BadRequestData } from '../http-exceptions/vo/bad-request.dto.js';
 import { ErrorResponse } from '../vo/error-response.dto.js';
 import { errorCodeSwaggerProperty } from './properties/error-code-swagger.property.js';
 
