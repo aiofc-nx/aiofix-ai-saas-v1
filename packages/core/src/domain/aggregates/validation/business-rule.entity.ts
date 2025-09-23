@@ -149,7 +149,7 @@ export class BusinessRule extends BaseEntity {
 		metadata?: Record<string, unknown>,
 		auditInfo?: IAuditInfo
 	) {
-		super(id, auditInfo);
+		super(id, auditInfo || {});
 
 		this._name = name;
 		this._description = description;
@@ -226,7 +226,7 @@ export class BusinessRule extends BaseEntity {
 	/**
 	 * 获取规则版本
 	 */
-	get version(): string {
+	get ruleVersion(): string {
 		return this._version;
 	}
 
@@ -393,7 +393,7 @@ export class BusinessRule extends BaseEntity {
 	 *
 	 * @returns 规则的JSON表示
 	 */
-	toJSON(): Record<string, unknown> {
+	override toJSON(): Record<string, unknown> {
 		return {
 			id: this.id.value,
 			name: this._name,

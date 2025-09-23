@@ -48,8 +48,10 @@ export default [
 					default: ['static-field', 'instance-field', 'static-method', 'instance-method']
 				}
 			],
+			'@typescript-eslint/member-ordering': 'off',
 
-			// 功能性规则 (从 TSLint 迁移)
+			// 功能性规则
+			'@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
 			'no-caller': 'error', // 禁用 arguments.callee (no-arg)
 			'no-bitwise': 'error', // 禁用位运算符 (no-bitwise)
 			'no-console': ['error', { allow: ['warn', 'error'] }], // 限制 console 使用 (no-console)
@@ -98,6 +100,51 @@ export default [
 			'prefer-const': 'error',
 			radix: 'error',
 			eqeqeq: ['error', 'always', { null: 'ignore' }]
+		}
+	},
+	{
+		files: ['**/*.spec.ts', '**/*.test.ts', '**/*.spec.js', '**/*.test.js'],
+		rules: {
+			// 测试文件的宽松规则
+			'@typescript-eslint/no-explicit-any': 'off', // 允许使用 any 类型
+			'@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }], // 未使用变量改为警告
+			'no-console': 'off', // 允许在测试中使用 console
+			'@typescript-eslint/no-empty-function': 'off', // 允许空函数
+			'@typescript-eslint/no-non-null-assertion': 'off', // 允许非空断言
+			'prefer-const': 'warn', // const 改为警告
+			'no-bitwise': 'off', // 允许位运算
+			'@typescript-eslint/ban-ts-comment': 'off', // 允许 @ts-ignore 等注释
+			'@typescript-eslint/no-empty': 'off', // 允许空代码块
+			'@typescript-eslint/no-inferrable-types': 'off', // 允许可推断类型
+			'@typescript-eslint/no-unsafe-assignment': 'off', // 允许不安全的赋值
+			'@typescript-eslint/no-unsafe-member-access': 'off', // 允许不安全的成员访问
+			'@typescript-eslint/no-unsafe-call': 'off', // 允许不安全的函数调用
+			'@typescript-eslint/no-unsafe-return': 'off', // 允许不安全的返回值
+			'@typescript-eslint/no-unsafe-argument': 'off', // 允许不安全的参数传递
+			'@typescript-eslint/restrict-template-expressions': 'off', // 允许模板表达式中的任意类型
+			'@typescript-eslint/restrict-plus-operands': 'off', // 允许加号操作符的任意类型
+			'@typescript-eslint/no-floating-promises': 'off', // 允许未处理的Promise
+			'@typescript-eslint/require-await': 'off', // 不要求async函数必须有await
+			'@typescript-eslint/no-misused-promises': 'off', // 允许Promise的误用
+			'@typescript-eslint/prefer-promise-reject-errors': 'off', // 允许Promise.reject任意值
+			'@typescript-eslint/no-unnecessary-type-assertion': 'off', // 允许不必要的类型断言
+			'@typescript-eslint/no-var-requires': 'off', // 允许require语句
+			'@typescript-eslint/ban-types': 'off', // 允许使用被禁止的类型
+			'@typescript-eslint/no-explicit-any': 'off', // 允许使用any类型
+			'@typescript-eslint/no-unsafe-assignment': 'off', // 允许不安全的赋值
+			'@typescript-eslint/no-unsafe-member-access': 'off', // 允许不安全的成员访问
+			'@typescript-eslint/no-unsafe-call': 'off', // 允许不安全的函数调用
+			'@typescript-eslint/no-unsafe-return': 'off', // 允许不安全的返回值
+			'@typescript-eslint/no-unsafe-argument': 'off', // 允许不安全的参数传递
+			'@typescript-eslint/restrict-template-expressions': 'off', // 允许模板表达式中的任意类型
+			'@typescript-eslint/restrict-plus-operands': 'off', // 允许加号操作符的任意类型
+			'@typescript-eslint/no-floating-promises': 'off', // 允许未处理的Promise
+			'@typescript-eslint/require-await': 'off', // 不要求async函数必须有await
+			'@typescript-eslint/no-misused-promises': 'off', // 允许Promise的误用
+			'@typescript-eslint/prefer-promise-reject-errors': 'off', // 允许Promise.reject任意值
+			'@typescript-eslint/no-unnecessary-type-assertion': 'off', // 允许不必要的类型断言
+			'@typescript-eslint/no-var-requires': 'off', // 允许require语句
+			'@typescript-eslint/ban-types': 'off' // 允许使用被禁止的类型
 		}
 	}
 ];

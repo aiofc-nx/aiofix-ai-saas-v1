@@ -7,7 +7,6 @@
 		"nx-graph-web": "nx graph --web --watch"
 	},
 	"private": true,
-	"dependencies": {},
 	"devDependencies": {
 		"@eslint/js": "^9.8.0",
 		"@nx/eslint": "21.5.3",
@@ -38,5 +37,8 @@
 	"engines": {
 		"node": ">= 20"
 	},
-	"packageManager": "pnpm@10.15.1"
+	"packageManager": "pnpm@10.15.1",
+	"dependencies": {
+		"uuid": "^13.0.0"
+	}
 }

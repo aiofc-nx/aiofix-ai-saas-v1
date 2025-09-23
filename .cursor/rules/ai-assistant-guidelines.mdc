@@ -23,7 +23,7 @@ alwaysApply: true
 
 ### Monorepo 结构
 
-```
+```text
 aiofix-ai-saas-v1/
 ├── packages/          # 共享库和业务模块（待开发）
 ├── apps/             # 应用程序（待创建）
@@ -135,12 +135,66 @@ aiofix-ai-saas-v1/
 4. **基础设施层**: 实现事件存储和消息传递
 5. **接口层开发**: 创建 REST API 和 GraphQL 接口
 
+### 当前重构计划
+
+#### Exceptions模块重构 (进行中)
+
+**重构目标**: 基于Cache模块设计模式，将Exceptions模块重构为企业级异常管理平台
+
+**核心原则**:
+
+- **模块边界清晰**: Core模块提供基础设施，Exceptions模块提供具体实现
+- **设计模式统一**: 参考Cache模块的分层架构和设计模式
+- **企业级能力**: 配置管理、监控、多租户、策略模式等
+
+**关键边界划分**:
+
+**Core模块保留**:
+
+- ✅ `CoreErrorBus` - 错误总线基础设施
+- ✅ `IErrorBus`等接口 - 错误处理接口定义
+- ✅ `BaseApplicationException` - 应用层异常基类
+- ✅ 多租户上下文管理
+- ✅ 监控基础设施
+
+**Exceptions模块职责**:
+
+- ✅ 统一异常管理器 - 基于Core模块错误总线的上层管理器
+- ✅ 异常处理策略 - 可插拔的异常处理策略
+- ✅ 异常转换桥梁 - 连接Core模块和HTTP层的桥梁
+- ✅ NestJS深度集成 - 装饰器、过滤器、拦截器
+- ✅ 配置管理 - 异常处理专用配置
+- ✅ 具体异常类 - HTTP异常、业务异常等
+
+**实施阶段**:
+
+- **Phase 1**: 基础架构搭建和Core模块集成 (Week 1-2)
+- **Phase 2**: 策略系统实现和Core模块功能迁移 (Week 3-4)
+- **Phase 3**: NestJS深度集成 (Week 5-6)
+- **Phase 4**: 高级特性和优化 (Week 7-8)
+
+**架构设计**:
+
+```text
+packages/exceptions/src/
+├── interfaces/     # 接口定义层
+├── core/          # 核心实现层
+├── strategies/    # 策略层
+├── bridges/       # 桥接层
+├── config/        # 配置集成层
+├── nestjs/        # NestJS集成层
+├── exceptions/    # 异常定义层
+├── filters/       # 过滤器层
+└── examples/      # 使用示例
+```
+
 ## 📚 重要文档参考
 
 ### 架构设计文档
 
 - `docs/base-architecture-designs/00-saas-platform-architecture-implementation.md`
 - `docs/base-architecture-designs/01-core-module-architecture.md`
+- `docs/base-architecture-designs/08-exceptions-module-refactoring.md` - **Exceptions模块重构方案**
 - 其他模块架构设计文档
 
 ### 配置文件
@@ -159,6 +213,32 @@ aiofix-ai-saas-v1/
 3. **文档维护**: 保持代码注释和文档的一致性
 4. **最佳实践**: 应用 Clean Architecture、CQRS、DDD 等最佳实践
 5. **工具使用**: 充分利用 Nx 和 MCP 工具提高开发效率
+6. **重构支持**: 在Exceptions模块重构过程中，严格遵循重构方案和边界划分原则
+
+### Exceptions模块重构指导
+
+**重构原则**:
+
+- **模块边界**: 严格遵循Core模块和Exceptions模块的职责划分
+- **设计模式**: 参考Cache模块的分层架构和设计模式
+- **渐进式迁移**: 按照4个阶段的计划逐步实施重构
+- **向后兼容**: 保持现有API的兼容性，提供平滑的升级路径
+
+**开发指导**:
+
+- 在开发Exceptions模块相关功能时，优先参考重构方案文档
+- 严格遵循模块边界划分，避免功能重叠
+- 使用策略模式、桥接模式等设计模式
+- 确保与Core模块的深度集成
+- 提供完整的TypeScript类型支持和测试用例
+
+**关键检查点**:
+
+- ✅ 是否遵循了模块边界划分？
+- ✅ 是否参考了Cache模块的设计模式？
+- ✅ 是否提供了完整的TSDoc注释？
+- ✅ 是否包含了单元测试？
+- ✅ 是否与Core模块正确集成？
 
 ### 开发原则
 

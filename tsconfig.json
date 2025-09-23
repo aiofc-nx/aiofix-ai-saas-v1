@@ -20,6 +20,12 @@
 		},
 		{
 			"path": "./packages/database"
+		},
+		{
+			"path": "./packages/exceptions"
+		},
+		{
+			"path": "./packages/lib-demo"
 		}
 	]
 }

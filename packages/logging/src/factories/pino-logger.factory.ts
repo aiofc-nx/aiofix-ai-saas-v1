@@ -39,7 +39,7 @@ export class PinoLoggerFactory {
 	 * @param {Record<string, any>} childOptions 子日志器选项
 	 * @returns {pino.Logger} 子日志器实例
 	 */
-	createChildLogger(parentLogger: pino.Logger, childOptions: Record<string, any>): pino.Logger {
+	createChildLogger(parentLogger: pino.Logger, childOptions: Record<string, unknown>): pino.Logger {
 		return parentLogger.child(childOptions);
 	}
 

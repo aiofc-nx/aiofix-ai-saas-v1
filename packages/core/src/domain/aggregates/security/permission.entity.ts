@@ -131,7 +131,7 @@ export class Permission extends BaseEntity {
 		metadata?: Record<string, unknown>,
 		auditInfo?: IAuditInfo
 	) {
-		super(id, auditInfo);
+		super(id, auditInfo || {});
 
 		this._name = name;
 		this._description = description;
@@ -334,7 +334,7 @@ export class Permission extends BaseEntity {
 	 *
 	 * @returns 权限的JSON表示
 	 */
-	toJSON(): Record<string, unknown> {
+	override toJSON(): Record<string, unknown> {
 		return {
 			id: this.id.value,
 			name: this._name,
