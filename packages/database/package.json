@@ -1,0 +1,26 @@
+{
+	"name": "@aiofix/database",
+	"version": "0.0.1",
+	"private": true,
+	"type": "module",
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		"./package.json": "./package.json",
+		".": {
+			"@aiofix/source": "./src/index.ts",
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js",
+			"default": "./dist/index.js"
+		}
+	},
+	"dependencies": {
+		"tslib": "^2.3.0",
+		"@nestjs/common": "11.1.6",
+		"@aiofix/config": "workspace:*",
+		"reflect-metadata": "0.2.2",
+		"@aiofix/core": "workspace:*",
+		"@nestjs/core": "11.1.6"
+	}
+}
